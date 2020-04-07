@@ -1,1 +1,1 @@
-web: bin/blackmanor
+web: blackmanor

@@ -7,7 +7,7 @@ import (
 	"os"
 	"io/ioutil"
 	"github.com/gorilla/websocket"
-	"github.com/keogami/player"
+	"github.com/keogami/blackmanor/player"
 )
 
 var (

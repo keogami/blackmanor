@@ -12,23 +12,22 @@ import (
 
 var (
 	totalConns int = 0
-	player [2]*player.Player
+	players [2]*player.Player
 )
 
 func startExchange() {
-	var m player.Message
 	for {
 		select {
-		case m, ok := <- player[0].Out:
+		case m, ok := <- players[0].Out:
 			if !ok {
 				break
 			}
-			player[1].in <- m
-		case m, ok := <- player[1].Out:
+			players[1].In <- m
+		case m, ok := <- players[1].Out:
 			if !ok {
 				break
 			}
-			player[0].in <- m
+			players[0].In <- m
 		}
 	}
 }
@@ -44,10 +43,10 @@ func shiftContext(w http.ResponseWriter, r *http.Request) {
 			fmt.Println(err)
 			return
 		}
-		conn.WriteMessage(websocket.TextMessage, "Waiting for the other Player to arrive")
-		player[0] = player.New(0, conn)
-		go player[0].ListenRead()
-		go player[0].SendWrites()
+		conn.WriteMessage(websocket.TextMessage, []byte("Waiting for the other Player to arrive"))
+		players[0] = player.New(0, conn)
+		go players[0].ListenRead()
+		go players[0].SendWrites()
 		totalConns  += 1
 	} else if totalConns == 1 {
 		conn, err := upgrader.Upgrade(w, r, nil)
@@ -55,14 +54,16 @@ func shiftContext(w http.ResponseWriter, r *http.Request) {
 			fmt.Println(err)
 			return
 		}
-		player.Message = Message{ websocket.TextMessage, "You may start sending messages now" }
-		player[1] = player.New(1, conn)
-		go player[1].ListenRead()
-		go player[1].SendWrites()
+		players[1] = player.New(1, conn)
+		go players[1].ListenRead()
+		go players[1].SendWrites()
 		go startExchange()
+		var m player.Message = player.Message{ websocket.TextMessage, []byte("You may start sending messages now") }
+		players[0].In <- m
+		players[1].In <- m
 		totalConns  += 1
 	} else {
-		fmt.FPrintf(w, "Connection refused.")
+		fmt.Fprintf(w, "Connection refused.")
 	}
 }
 

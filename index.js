@@ -10,6 +10,10 @@ ws.onmessage = function (message) {
         box.innerText += message.data
     }
 }
+ws.onclose = function () {
+    box.innerText += "\n"
+    box.innerText += "The connection was closed."
+}
 ws.onopen = function () {
     console.log("open")
     $.querySelector('input[type=button]').addEventListener("click", function () {

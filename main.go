@@ -15,17 +15,24 @@ var (
 	players [2]*player.Player
 )
 
+func sessionCleanup() {
+	close(players[0].In)
+	close(players[1].In)
+	totalConns = 0
+}
+
 func startExchange() {
+	Session:
 	for {
 		select {
 		case m, ok := <- players[0].Out:
 			if !ok {
-				break
+				break Session
 			}
 			players[1].In <- m
 		case m, ok := <- players[1].Out:
 			if !ok {
-				break
+				break Session
 			}
 			players[0].In <- m
 		}
@@ -58,7 +65,10 @@ func shiftContext(w http.ResponseWriter, r *http.Request) {
 		go players[1].ListenRead()
 		go players[1].SendWrites()
 		go startExchange()
-		var m player.Message = player.Message{ websocket.TextMessage, []byte("You may start sending messages now") }
+		var m player.Message = player.Message{ 
+			Type: websocket.TextMessage,
+			Content: []byte("You may start sending messages now"),
+		}
 		players[0].In <- m
 		players[1].In <- m
 		totalConns  += 1
@@ -68,6 +78,10 @@ func shiftContext(w http.ResponseWriter, r *http.Request) {
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
+	if (totalConns >= 2) {
+		fmt.Fprintf(w, "The room is full. Come back again when invited.")
+		return
+	}
 	mappedPath := ""
 	if r.URL.Path == "/" {
 		mappedPath = "index.html"

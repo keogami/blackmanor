@@ -45,4 +45,5 @@ func (p *Player) SendWrites() {
 			fmt.Println(err)
 		}
 	}
+	p.conn.Close()
 }

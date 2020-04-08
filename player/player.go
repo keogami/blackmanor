@@ -19,6 +19,10 @@ type Player struct {
 
 
 func New(id int, conn *websocket.Conn) *Player {
+	conn.SetCloseHandler(func (code int, message string) error {
+		fmt.Printf("Player[%d] sent a [Close] message...", id)
+		return nil
+	})
 	return &Player{
 		Id: id, 
 		conn: conn,

@@ -1,5 +1,7 @@
 $ = document
-var ws = new WebSocket(`ws://${location.host}/socketgateway`)
+var wsProtocol =  (location.protocol === "https:") ? "wss:" : "ws:"
+var socketGatewayPath = `${wsProtocol}//${location.host}/socketgateway`;
+var ws = new WebSocket(socketGatewayPath)
 var box = $.querySelector("div.box")
 ws.onmessage = function (message) {
     box.innerText += "\n"

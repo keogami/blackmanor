@@ -37,6 +37,7 @@ func startExchange() {
 			players[0].In <- m
 		}
 	}
+	sessionCleanup()
 }
 
 func shiftContext(w http.ResponseWriter, r *http.Request) {
@@ -44,6 +45,7 @@ func shiftContext(w http.ResponseWriter, r *http.Request) {
 		ReadBufferSize:  1024,
 		WriteBufferSize: 1024,
 	}
+	fmt.Println("Socket connection attempted...")
 	if totalConns == 0 {
 		conn, err := upgrader.Upgrade(w, r, nil)
 		if err != nil {
@@ -55,6 +57,7 @@ func shiftContext(w http.ResponseWriter, r *http.Request) {
 		go players[0].ListenRead()
 		go players[0].SendWrites()
 		totalConns  += 1
+		fmt.Printf("Socket connection accepted. Count: %d\n", totalConns)
 	} else if totalConns == 1 {
 		conn, err := upgrader.Upgrade(w, r, nil)
 		if err != nil {
@@ -72,13 +75,15 @@ func shiftContext(w http.ResponseWriter, r *http.Request) {
 		players[0].In <- m
 		players[1].In <- m
 		totalConns  += 1
+		fmt.Printf("Socket connection accepted. Count: %d\n", totalConns)
 	} else {
 		fmt.Fprintf(w, "Connection refused.")
+		fmt.Printf("Socket connection refused. Count: %d\n", totalConns)
 	}
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
-	if (totalConns >= 2) {
+	if totalConns >= 2 {
 		fmt.Fprintf(w, "The room is full. Come back again when invited.")
 		return
 	}

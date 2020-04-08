@@ -1,5 +1,5 @@
 $ = document
-var ws = new WebSocket(`wss://${location.host}/socketgateway`)
+var ws = new WebSocket(`ws://${location.host}/socketgateway`)
 var box = $.querySelector("div.box")
 ws.onmessage = function (message) {
     box.innerText += "\n"

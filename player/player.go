@@ -26,8 +26,7 @@ func New(id int, conn *websocket.Conn) *Player {
 		In: make(chan Message, 1024),
 	}
 	p.conn.SetCloseHandler(func (code int, message string) error {
-		fmt.Printf("Player[%d] sent a [Close] message...\n", id)
-		close(p.Out)
+		//close(p.Out)
 		return nil
 	})
 	return p
@@ -37,6 +36,7 @@ func (p *Player) ListenRead() {
 	for {
 		messageType, message, err := p.conn.ReadMessage()
 		if err != nil {
+			fmt.Printf("Player[%d] sent a [Close] message...\n", p.Id)
 			close(p.Out)
 			break
 		}

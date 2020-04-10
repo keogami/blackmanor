@@ -5,7 +5,6 @@ import (
 	"net/http"
 	"log"
 	"os"
-	"io/ioutil"
 	"github.com/gorilla/websocket"
 	"github.com/keogami/blackmanor/player"
 )
@@ -52,7 +51,7 @@ func shiftContext(w http.ResponseWriter, r *http.Request) {
 			fmt.Println(err)
 			return
 		}
-		conn.WriteMessage(websocket.TextMessage, []byte("Waiting for the other Player to arrive"))
+		conn.WriteMessage(websocket.TextMessage, []byte("I see, you have accepted our invitation. Master will be delighted. It seems your friend is still on his way. We shall wait for his arrival..."))
 		players[0] = player.New(0, conn)
 		go players[0].ListenRead()
 		go players[0].SendWrites()
@@ -70,7 +69,7 @@ func shiftContext(w http.ResponseWriter, r *http.Request) {
 		go startExchange()
 		var m player.Message = player.Message{ 
 			Type: websocket.TextMessage,
-			Content: []byte("You may start sending messages now"),
+			Content: []byte("Your friend has arrived, sir. You may <click> on the first of the four box below to open a chat terminal. Technology has advanced, so must we."),
 		}
 		players[0].In <- m
 		players[1].In <- m
@@ -96,11 +95,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	}  else {
 		mappedPath = "." + r.URL.Path
 	}
-	content, err := ioutil.ReadFile(mappedPath)
-	if err != nil {
-		http.Error(w, "this file doesn't not exist", http.StatusNotFound)
-	}
-	fmt.Fprintf(w, "%s", string(content))
+	http.ServeFile(w, r, mappedPath)
 	fmt.Println(r.URL.Path)
 }
 

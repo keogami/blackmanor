@@ -1,0 +1,119 @@
+body {
+  background: black;
+  color: white;
+  padding: 0em;
+  margin: 0em;
+  width: 100vw;
+  height: 100vh;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+body .pane {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
+  overflow: hidden;
+}
+body #main-canvas-con canvas {
+  width: 100%;
+  height: 100%;
+}
+body #dialog-con {
+  display: flex;
+  justify-content: center;
+}
+body #dialog-con .alignment-wrapper {
+  width: 75%;
+  position: absolute;
+  bottom: 2.2em;
+  display: flex;
+  justify-content: center;
+}
+body #dialog-con .alignment-wrapper #dialog, body #dialog-con .alignment-wrapper #speaker {
+  border: 3px solid white;
+  background: black;
+  padding: 0.8em;
+}
+body #dialog-con .alignment-wrapper #speaker {
+  position: absolute;
+  top: -1.5em;
+  left: -2.3em;
+}
+body #dialog-con .alignment-wrapper #dialog {
+  height: 23vh;
+  width: 100%
+}
+body #dialog-con .alignment-wrapper #dialog p {
+  max-height: 7ch;
+  overflow: hidden;
+  font-size: 2ch;
+  line-height: 2.2ch;
+}
+body #dialog-con .alignment-wrapper #shifters {
+  position: absolute;
+  bottom: -1em;
+  display: flex;
+  border-right: 3px solid white;
+  background: black;
+}
+body #dialog-con .alignment-wrapper #shifters .shifter {
+  width: 3em;
+  height: 3em;
+  border: 3px solid white;
+  border-right: none;
+  cursor: pointer;
+}
+body #dialog-con .alignment-wrapper #shifters .shifter img {
+  max-width: 100%;
+  max-height: 100%;
+}
+body #chat-con.active {
+  opacity: 1;
+  pointer-events: all;
+}
+body #chat-con {
+  width: 30vw;
+  height: 40vh;
+  border: 3px solid white;
+  background: black;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  right: 14.5vw;
+  bottom: calc(1.2em + 23vh);
+  opacity: 0;
+  pointer-events: none;
+}
+body #chat-con #message-view {
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
+  padding: 0.5em;
+}
+body #chat-con #message-view hr {
+  color: white;
+}
+body #chat-con #input-box {
+  width: 100%;
+  height: 3em;
+  border-top: 3px solid white;
+  box-sizing: content-box;
+}
+body #chat-con #input-box input {
+  background: black;
+  color: white;
+  width: 100%;
+  height: 100%;
+  border: none;
+  outline: none;
+  padding: 0.5em;
+  box-sizing: border-box;
+}
+
+div {
+  box-sizing: border-box;
+  padding: 0em;
+  margin: 0em;
+}
+
+/*# sourceMappingURL=main.css.map */

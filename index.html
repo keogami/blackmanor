@@ -5,11 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>BlackManor</title>
+    <link rel="stylesheet" href="main.css">
 </head>
 <body>
-    <p>Welcome to BlackManor</p>
-    <input type="text" name="message" id="message"><input type="button" value="Send">
-    <div class="box"></div>
+    <div class="pane" id="main-canvas-con" data-layer="0">
+        <canvas id=""></canvas>
+    </div>
+    <div class="pane" id="dialog-con" data-layer="1">
+        <div class="alignment-wrapper">
+            <div id="speaker">&nbsp;&nbsp;&nbsp;</div>
+            <div id="dialog">
+                <p></p>
+            </div>
+            <div id="shifters">
+                <div title="Send Message" class="shifter" id="chat"><img src="chat.svg" alt="N"></div>
+                <div title="Check Objectives" class="shifter" id="objectives"><img src="chat.svg" alt="N"></div>
+                <div title="Open Settings" class="shifter" id="settings"><img src="chat.svg" alt="N"></div>
+                <div title="See Logs" class="shifter" id="logs"><img src="chat.svg" alt="N"></div>
+            </div>
+        </div>
+    </div>
+    <div class="pane" id="chat-con" data-layer="2">
+        <div id="message-view"></div>
+        <div id="input-box">
+            <input type="text" id="message-input" placeholder="Type your message here and press <enter> to send">
+        </div>
+    </div>
 </body>
-<script src="index.js" type="text/javascript"></script>
+<script src="index.js"></script>
 </html>
